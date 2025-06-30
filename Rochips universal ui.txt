@@ -605,7 +605,7 @@ end
 
 local player = game.Players.LocalPlayer
 local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
-gui.Name = "Notifi"
+gui.Name = "NotifiGui"
 gui.ResetOnSpawn = false
 
 local Configs_HUB = {
@@ -617,6 +617,37 @@ local Configs_HUB = {
 	Corner_Radius = UDim.new(0, 4),
 	Text_Font = Enum.Font.FredokaOne
 }
+
+local function Create(class, parent, properties)
+	local obj = Instance.new(class)
+	if parent then
+		obj.Parent = parent
+	end
+	if properties then
+		for prop, val in pairs(properties) do
+			obj[prop] = val
+		end
+	end
+	return obj
+end
+
+local function Corner(inst)
+	local c = Instance.new("UICorner")
+	c.CornerRadius = Configs_HUB.Corner_Radius
+	c.Parent = inst
+	return c
+end
+
+local function CreateTween(inst, prop, goal, duration, override)
+	local TweenService = game:GetService("TweenService")
+	local tweenInfo = TweenInfo.new(duration or 0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+	if override then
+		tweenInfo = TweenInfo.new(duration or 0.5, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+	end
+	local tween = TweenService:Create(inst, tweenInfo, {[prop] = goal})
+	tween:Play()
+	return tween
+end
 
 local Notifi = Create("Frame", gui, {
 	Size = UDim2.new(0, 300, 1, 0),
@@ -635,13 +666,6 @@ Create("UIListLayout", Notifi, {
 	Padding = UDim.new(0, 15),
 	VerticalAlignment = Enum.VerticalAlignment.Bottom
 })
-
-function Corner(inst)
-	local c = Instance.new("UICorner")
-	c.CornerRadius = Configs_HUB.Corner_Radius
-	c.Parent = inst
-	return c
-end
 
 function MakeNotifi(Configs)
 	local Title = Configs.Title or "تنبيه"
