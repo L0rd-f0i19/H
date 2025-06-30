@@ -613,6 +613,24 @@ local Configs_HUB = {
   Text_Font = Enum.Font.FredokaOne
 }
 
+local Menu_Notifi = Create("Frame", ScreenGui, {
+  Size = UDim2.new(0, 300, 1, 0),
+  Position = UDim2.new(1, 0, 0, 0),
+  AnchorPoint = Vector2.new(1, 0),
+  BackgroundTransparency = 1
+})
+
+local Padding = Create("UIPadding", Menu_Notifi, {
+  PaddingLeft = UDim.new(0, 25),
+  PaddingTop = UDim.new(0, 25),
+  PaddingBottom = UDim.new(0, 50)
+})
+
+local ListLayout = Create("UIListLayout", Menu_Notifi, {
+  Padding = UDim.new(0, 15),
+  VerticalAlignment = "Bottom"
+})
+
 function MakeNotifi(Configs)
   local Title = Configs.Title or "REDz HUB"
   local text = Configs.Text or "Notificação"
@@ -621,7 +639,7 @@ function MakeNotifi(Configs)
   local Frame1 = Create("Frame", Menu_Notifi, {
     Size = UDim2.new(2, 0, 0, 0),
     BackgroundTransparency = 1,
-    AutomaticSize = Enum.AutomaticSize.Y,
+    AutomaticSize = "Y",
     Name = "Title"
   })
   
@@ -629,18 +647,17 @@ function MakeNotifi(Configs)
     Size = UDim2.new(0, Menu_Notifi.Size.X.Offset - 50, 0, 0),
     BackgroundColor3 = Configs_HUB.Cor_Hub,
     Position = UDim2.new(0, Menu_Notifi.Size.X.Offset, 0, 0),
-    AutomaticSize = Enum.AutomaticSize.Y
-  })
-  Corner(Frame2)
+    AutomaticSize = "Y"
+  })Corner(Frame2)
   
-  local TextLabelTitle = Create("TextLabel", Frame2, {
+  local TextLabel = Create("TextLabel", Frame2, {
     Size = UDim2.new(1, 0, 0, 25),
     Font = Configs_HUB.Text_Font,
     BackgroundTransparency = 1,
     Text = Title,
     TextSize = 20,
     Position = UDim2.new(0, 20, 0, 5),
-    TextXAlignment = Enum.TextXAlignment.Left,
+    TextXAlignment = "Left",
     TextColor3 = Configs_HUB.Cor_Text
   })
   
@@ -655,18 +672,19 @@ function MakeNotifi(Configs)
     Size = UDim2.new(0, 25, 0, 25)
   })
   
-  local TextLabelBody = Create("TextLabel", Frame2, {
+  local TextLabel = Create("TextLabel", Frame2, {
     Size = UDim2.new(1, -30, 0, 0),
     Position = UDim2.new(0, 20, 0, TextButton.Size.Y.Offset + 10),
     TextSize = 15,
     TextColor3 = Configs_HUB.Cor_DarkText,
-    TextXAlignment = Enum.TextXAlignment.Left,
-    TextYAlignment = Enum.TextYAlignment.Top,
-    AutomaticSize = Enum.AutomaticSize.Y,
-    TextWrapped = true,
+    TextXAlignment = "Left",
+    TextYAlignment = "Top",
+    AutomaticSize = "Y",
     Text = text,
     Font = Configs_HUB.Text_Font,
-    BackgroundTransparency = 1
+    BackgroundTransparency = 1,
+    AutomaticSize = Enum.AutomaticSize.Y,
+    TextWrapped = true
   })
   
   local FrameSize = Create("Frame", Frame2, {
@@ -674,10 +692,7 @@ function MakeNotifi(Configs)
     BackgroundColor3 = Configs_HUB.Cor_Stroke,
     Position = UDim2.new(0, 2, 0, 30),
     BorderSizePixel = 0
-  })
-  Corner(FrameSize)
-  
-  Create("Frame", Frame2, {
+  })Corner(FrameSize)Create("Frame", Frame2, {
     Size = UDim2.new(0, 0, 0, 5),
     Position = UDim2.new(0, 0, 1, 5),
     BackgroundTransparency = 1
@@ -695,9 +710,8 @@ function MakeNotifi(Configs)
   
   task.spawn(function()
     CreateTween(Frame2, "Position", UDim2.new(0, -20, 0, 0), 0.5, true)
-    CreateTween(Frame2, "Position", UDim2.new(), 0.1, true)
-    task.wait(timewait)
-    if Frame2 and Frame2.Parent then
+    CreateTween(Frame2, "Position", UDim2.new(), 0.1, true)task.wait(timewait)
+    if Frame2 then
       CreateTween(Frame2, "Position", UDim2.new(0, -20, 0, 0), 0.1, true)
       CreateTween(Frame2, "Position", UDim2.new(0, Menu_Notifi.Size.X.Offset, 0, 0), 0.5, true)
       Frame1:Destroy()
