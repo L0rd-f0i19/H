@@ -636,6 +636,13 @@ Create("UIListLayout", Notifi, {
 	VerticalAlignment = Enum.VerticalAlignment.Bottom
 })
 
+function Corner(inst)
+	local c = Instance.new("UICorner")
+	c.CornerRadius = Configs_HUB.Corner_Radius
+	c.Parent = inst
+	return c
+end
+
 function MakeNotifi(Configs)
 	local Title = Configs.Title or "تنبيه"
 	local Text = Configs.Text or "تم التنفيذ"
