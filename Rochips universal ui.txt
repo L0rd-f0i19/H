@@ -603,14 +603,8 @@ function redzlib:SetScale(NewScale)
 end
 
 
-local player = game.Players.LocalPlayer
-local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
-gui.Name = "NotifiGui"
-gui.ResetOnSpawn = false
-
 local Configs_HUB = {
 	Cor_Hub = Color3.fromRGB(15, 15, 15),
-	Cor_Options = Color3.fromRGB(15, 15, 15),
 	Cor_Stroke = Color3.fromRGB(0, 0, 255),
 	Cor_Text = Color3.fromRGB(240, 240, 240),
 	Cor_DarkText = Color3.fromRGB(240, 240, 240),
@@ -620,14 +614,8 @@ local Configs_HUB = {
 
 local function Create(class, parent, properties)
 	local obj = Instance.new(class)
-	if parent then
-		obj.Parent = parent
-	end
-	if properties then
-		for prop, val in pairs(properties) do
-			obj[prop] = val
-		end
-	end
+	if parent then obj.Parent = parent end
+	if properties then for prop, val in pairs(properties) do obj[prop] = val end end
 	return obj
 end
 
@@ -638,66 +626,69 @@ local function Corner(inst)
 	return c
 end
 
+local TweenService = game:GetService("TweenService")
 local function CreateTween(inst, prop, goal, duration, override)
-	local TweenService = game:GetService("TweenService")
-	local tweenInfo = TweenInfo.new(duration or 0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-	if override then
-		tweenInfo = TweenInfo.new(duration or 0.5, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-	end
-	local tween = TweenService:Create(inst, tweenInfo, {[prop] = goal})
-	tween:Play()
-	return tween
+	local t = TweenInfo.new(duration or 0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+	if override then t = TweenInfo.new(duration or 0.5, Enum.EasingStyle.Linear, Enum.EasingDirection.Out) end
+	local tw = TweenService:Create(inst, t, {[prop] = goal})
+	tw:Play()
+	return tw
 end
 
-local Notifi = Create("Frame", gui, {
+local gui = Instance.new("ScreenGui", game.Players.LocalPlayer:WaitForChild("PlayerGui"))
+gui.Name = "NotifGui"
+gui.ResetOnSpawn = false
+
+local NotifiPanel = Create("Frame", gui, {
 	Size = UDim2.new(0, 300, 1, 0),
 	Position = UDim2.new(1, 0, 0, 0),
 	AnchorPoint = Vector2.new(1, 0),
 	BackgroundTransparency = 1
 })
 
-Create("UIPadding", Notifi, {
+Create("UIPadding", NotifiPanel, {
 	PaddingLeft = UDim.new(0, 25),
 	PaddingTop = UDim.new(0, 25),
 	PaddingBottom = UDim.new(0, 50)
 })
 
-Create("UIListLayout", Notifi, {
+Create("UIListLayout", NotifiPanel, {
 	Padding = UDim.new(0, 15),
 	VerticalAlignment = Enum.VerticalAlignment.Bottom
 })
 
 function MakeNotifi(Configs)
-	local Title = Configs.Title or "تنبيه"
-	local Text = Configs.Text or "تم التنفيذ"
-	local Duration = Configs.Time or 5
+	local Title = Configs.Title or "REDz HUB"
+	local Text = Configs.Text or "Notificação"
+	local TimeWait = Configs.Time or 5
 
-	local Holder = Create("Frame", Notifi, {
-		Size = UDim2.new(0, 300, 0, 0),
+	local Main = Create("Frame", NotifiPanel, {
+		Size = UDim2.new(2, 0, 0, 0),
 		BackgroundTransparency = 1,
-		AutomaticSize = Enum.AutomaticSize.Y
+		AutomaticSize = "Y",
+		Name = "Notif"
 	})
 
-	local Main = Create("Frame", Holder, {
+	local Body = Create("Frame", Main, {
 		Size = UDim2.new(0, 250, 0, 0),
 		BackgroundColor3 = Configs_HUB.Cor_Hub,
 		Position = UDim2.new(0, 300, 0, 0),
-		AutomaticSize = Enum.AutomaticSize.Y
+		AutomaticSize = "Y"
 	})
-	Corner(Main)
+	Corner(Body)
 
-	Create("TextLabel", Main, {
+	Create("TextLabel", Body, {
 		Size = UDim2.new(1, 0, 0, 25),
 		Font = Configs_HUB.Text_Font,
 		BackgroundTransparency = 1,
 		Text = Title,
 		TextSize = 20,
 		Position = UDim2.new(0, 20, 0, 5),
-		TextXAlignment = Enum.TextXAlignment.Left,
+		TextXAlignment = "Left",
 		TextColor3 = Configs_HUB.Cor_Text
 	})
 
-	local Close = Create("TextButton", Main, {
+	local Close = Create("TextButton", Body, {
 		Text = "X",
 		Font = Configs_HUB.Text_Font,
 		TextSize = 20,
@@ -708,13 +699,13 @@ function MakeNotifi(Configs)
 		Size = UDim2.new(0, 25, 0, 25)
 	})
 
-	Create("TextLabel", Main, {
+	Create("TextLabel", Body, {
 		Size = UDim2.new(1, -30, 0, 0),
-		Position = UDim2.new(0, 20, 0, 35),
+		Position = UDim2.new(0, 20, 0, 40),
 		TextSize = 15,
 		TextColor3 = Configs_HUB.Cor_DarkText,
-		TextXAlignment = Enum.TextXAlignment.Left,
-		TextYAlignment = Enum.TextYAlignment.Top,
+		TextXAlignment = "Left",
+		TextYAlignment = "Top",
 		AutomaticSize = Enum.AutomaticSize.Y,
 		Text = Text,
 		Font = Configs_HUB.Text_Font,
@@ -722,7 +713,7 @@ function MakeNotifi(Configs)
 		TextWrapped = true
 	})
 
-	local Line = Create("Frame", Main, {
+	local Line = Create("Frame", Body, {
 		Size = UDim2.new(1, 0, 0, 2),
 		BackgroundColor3 = Configs_HUB.Cor_Stroke,
 		Position = UDim2.new(0, 2, 0, 30),
@@ -730,30 +721,30 @@ function MakeNotifi(Configs)
 	})
 	Corner(Line)
 
-	Create("Frame", Main, {
+	Create("Frame", Body, {
 		Size = UDim2.new(0, 0, 0, 5),
 		Position = UDim2.new(0, 0, 1, 5),
 		BackgroundTransparency = 1
 	})
 
 	task.spawn(function()
-		CreateTween(Line, "Size", UDim2.new(0, 0, 0, 2), Duration, true)
+		CreateTween(Line, "Size", UDim2.new(0, 0, 0, 2), TimeWait, true)
 	end)
 
 	Close.MouseButton1Click:Connect(function()
-		CreateTween(Main, "Position", UDim2.new(0, -20, 0, 0), 0.1, true)
-		CreateTween(Main, "Position", UDim2.new(0, 300, 0, 0), 0.5, true)
-		Holder:Destroy()
+		CreateTween(Body, "Position", UDim2.new(0, -20, 0, 0), 0.1, true)
+		CreateTween(Body, "Position", UDim2.new(0, 300, 0, 0), 0.5, true)
+		Main:Destroy()
 	end)
 
 	task.spawn(function()
-		CreateTween(Main, "Position", UDim2.new(0, -20, 0, 0), 0.5, true)
-		CreateTween(Main, "Position", UDim2.new(0, 0, 0, 0), 0.1, true)
-		task.wait(Duration)
-		if Main then
-			CreateTween(Main, "Position", UDim2.new(0, -20, 0, 0), 0.1, true)
-			CreateTween(Main, "Position", UDim2.new(0, 300, 0, 0), 0.5, true)
-			Holder:Destroy()
+		CreateTween(Body, "Position", UDim2.new(0, -20, 0, 0), 0.5, true)
+		CreateTween(Body, "Position", UDim2.new(), 0.1, true)
+		task.wait(TimeWait)
+		if Body then
+			CreateTween(Body, "Position", UDim2.new(0, -20, 0, 0), 0.1, true)
+			CreateTween(Body, "Position", UDim2.new(0, 300, 0, 0), 0.5, true)
+			Main:Destroy()
 		end
 	end)
 end
