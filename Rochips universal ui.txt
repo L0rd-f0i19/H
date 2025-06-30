@@ -1895,144 +1895,128 @@ function redzlib:MakeWindow(Configs)
       return TextBox
     end
 
+
 local Configs_HUB = {
-	Cor_Hub = Color3.fromRGB(15, 15, 15),
-	Cor_Stroke = Color3.fromRGB(0, 0, 255),
-	Cor_Text = Color3.fromRGB(240, 240, 240),
-	Cor_DarkText = Color3.fromRGB(240, 240, 240),
-	Corner_Radius = UDim.new(0,4),
-	Text_Font = Enum.Font.FredokaOne
+  Cor_Hub = Color3.fromRGB(15, 15, 15),
+  Cor_Options = Color3.fromRGB(15, 15, 15),
+  Cor_Stroke = Color3.fromRGB(0,0,255),
+  Cor_Text = Color3.fromRGB(240, 240, 240),
+  Cor_DarkText = Color3.fromRGB(240, 240, 240),
+  Corner_Radius = UDim.new(0,4),
+  Text_Font = Enum.Font.FredokaOne
 }
 
-local TweenService = game:GetService("TweenService")
+local Menu_Notifi = Instance.new("Frame")
+Menu_Notifi.Name = "Menu_Notifi"
+Menu_Notifi.Size = UDim2.new(0, 300, 1, 0)
+Menu_Notifi.Position = UDim2.new(1, 0, 0, 0)
+Menu_Notifi.AnchorPoint = Vector2.new(1, 0)
+Menu_Notifi.BackgroundTransparency = 1
+Menu_Notifi.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
-local function Create(class, parent, props)
-	local inst = Instance.new(class)
-	for i,v in pairs(props or {}) do inst[i] = v end
-	if parent then inst.Parent = parent end
-	return inst
-end
+local Padding = Instance.new("UIPadding")
+Padding.PaddingLeft = UDim.new(0, 25)
+Padding.PaddingTop = UDim.new(0, 25)
+Padding.PaddingBottom = UDim.new(0, 50)
+Padding.Parent = Menu_Notifi
 
-local function Corner(inst)
-	local c = Instance.new("UICorner")
-	c.CornerRadius = Configs_HUB.Corner_Radius
-	c.Parent = inst
-end
-
-local gui = Instance.new("ScreenGui", game.Players.LocalPlayer:WaitForChild("PlayerGui"))
-gui.Name = "REDZ_NOTIF"
-gui.ResetOnSpawn = false
-
-local Menu_Notifi = Create("Frame", gui, {
-	Size = UDim2.new(0, 300, 1, 0),
-	Position = UDim2.new(1, 0, 0, 0),
-	AnchorPoint = Vector2.new(1, 0),
-	BackgroundTransparency = 1
-})
-
-Create("UIPadding", Menu_Notifi, {
-	PaddingLeft = UDim.new(0, 25),
-	PaddingTop = UDim.new(0, 25),
-	PaddingBottom = UDim.new(0, 50)
-})
-
-Create("UIListLayout", Menu_Notifi, {
-	Padding = UDim.new(0, 15),
-	VerticalAlignment = Enum.VerticalAlignment.Bottom
-})
+local ListLayout = Instance.new("UIListLayout")
+ListLayout.Padding = UDim.new(0, 15)
+ListLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
+ListLayout.Parent = Menu_Notifi
 
 function MakeNotifi(Configs)
-	local Title = Configs.Title or "REDz HUB"
-	local text = Configs.Text or "تم بنجاح"
-	local timewait = Configs.Time or 5
-	
-	local Frame1 = Create("Frame", Menu_Notifi, {
-		Size = UDim2.new(2, 0, 0, 0),
-		BackgroundTransparency = 1,
-		AutomaticSize = "Y",
-		Name = "Title"
-	})
-	
-	local Frame2 = Create("Frame", Frame1, {
-		Size = UDim2.new(0, 250, 0, 0),
-		BackgroundColor3 = Configs_HUB.Cor_Hub,
-		Position = UDim2.new(0, 50, 0, 0),
-		AutomaticSize = "Y"
-	})
-	Corner(Frame2)
+  local Title = Configs.Title or "REDz HUB"
+  local text = Configs.Text or "Notificação"
+  local timewait = Configs.Time or 5
 
-	Create("TextLabel", Frame2, {
-		Size = UDim2.new(1, 0, 0, 25),
-		Font = Configs_HUB.Text_Font,
-		BackgroundTransparency = 1,
-		Text = Title,
-		TextSize = 20,
-		Position = UDim2.new(0, 20, 0, 5),
-		TextXAlignment = "Left",
-		TextColor3 = Configs_HUB.Cor_Text
-	})
+  local Frame1 = Instance.new("Frame")
+  Frame1.Size = UDim2.new(2, 0, 0, 0)
+  Frame1.BackgroundTransparency = 1
+  Frame1.AutomaticSize = "Y"
+  Frame1.Name = "Title"
+  Frame1.Parent = Menu_Notifi
 
-	local TextButton = Create("TextButton", Frame2, {
-		Text = "X",
-		Font = Configs_HUB.Text_Font,
-		TextSize = 20,
-		BackgroundTransparency = 1,
-		TextColor3 = Color3.fromRGB(200, 200, 200),
-		Position = UDim2.new(1, -5, 0, 5),
-		AnchorPoint = Vector2.new(1, 0),
-		Size = UDim2.new(0, 25, 0, 25)
-	})
+  local Frame2 = Instance.new("Frame")
+  Frame2.Size = UDim2.new(0, 250, 0, 0)
+  Frame2.BackgroundColor3 = Configs_HUB.Cor_Hub
+  Frame2.Position = UDim2.new(0, 50, 0, 0)
+  Frame2.AutomaticSize = "Y"
+  Frame2.Parent = Frame1
+  local corner = Instance.new("UICorner", Frame2)
+  corner.CornerRadius = Configs_HUB.Corner_Radius
 
-	Create("TextLabel", Frame2, {
-		Size = UDim2.new(1, -30, 0, 0),
-		Position = UDim2.new(0, 20, 0, TextButton.Size.Y.Offset + 10),
-		TextSize = 15,
-		TextColor3 = Configs_HUB.Cor_DarkText,
-		TextXAlignment = "Left",
-		TextYAlignment = "Top",
-		AutomaticSize = Enum.AutomaticSize.Y,
-		Text = text,
-		Font = Configs_HUB.Text_Font,
-		BackgroundTransparency = 1,
-		TextWrapped = true
-	})
+  local TextLabel = Instance.new("TextLabel")
+  TextLabel.Size = UDim2.new(1, 0, 0, 25)
+  TextLabel.Font = Configs_HUB.Text_Font
+  TextLabel.BackgroundTransparency = 1
+  TextLabel.Text = Title
+  TextLabel.TextSize = 20
+  TextLabel.Position = UDim2.new(0, 20, 0, 5)
+  TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+  TextLabel.TextColor3 = Configs_HUB.Cor_Text
+  TextLabel.Parent = Frame2
 
-	local FrameSize = Create("Frame", Frame2, {
-		Size = UDim2.new(1, 0, 0, 2),
-		BackgroundColor3 = Configs_HUB.Cor_Stroke,
-		Position = UDim2.new(0, 2, 0, 30),
-		BorderSizePixel = 0
-	})
-	Corner(FrameSize)
+  local TextButton = Instance.new("TextButton")
+  TextButton.Text = "X"
+  TextButton.Font = Configs_HUB.Text_Font
+  TextButton.TextSize = 20
+  TextButton.BackgroundTransparency = 1
+  TextButton.TextColor3 = Color3.fromRGB(200, 200, 200)
+  TextButton.Position = UDim2.new(1, -5, 0, 5)
+  TextButton.AnchorPoint = Vector2.new(1, 0)
+  TextButton.Size = UDim2.new(0, 25, 0, 25)
+  TextButton.Parent = Frame2
 
-	Create("Frame", Frame2, {
-		Size = UDim2.new(0, 0, 0, 5),
-		Position = UDim2.new(0, 0, 1, 5),
-		BackgroundTransparency = 1
-	})
+  local MessageLabel = Instance.new("TextLabel")
+  MessageLabel.Size = UDim2.new(1, -30, 0, 0)
+  MessageLabel.Position = UDim2.new(0, 20, 0, TextButton.Size.Y.Offset + 10)
+  MessageLabel.TextSize = 15
+  MessageLabel.TextColor3 = Configs_HUB.Cor_DarkText
+  MessageLabel.TextXAlignment = Enum.TextXAlignment.Left
+  MessageLabel.TextYAlignment = Enum.TextYAlignment.Top
+  MessageLabel.AutomaticSize = Enum.AutomaticSize.Y
+  MessageLabel.Text = text
+  MessageLabel.Font = Configs_HUB.Text_Font
+  MessageLabel.BackgroundTransparency = 1
+  MessageLabel.TextWrapped = true
+  MessageLabel.Parent = Frame2
 
-	task.spawn(function()
-		TweenService:Create(FrameSize, TweenInfo.new(timewait), {Size = UDim2.new(0, 0, 0, 2)}):Play()
-	end)
+  local FrameSize = Instance.new("Frame")
+  FrameSize.Size = UDim2.new(1, 0, 0, 2)
+  FrameSize.BackgroundColor3 = Configs_HUB.Cor_Stroke
+  FrameSize.Position = UDim2.new(0, 2, 0, 30)
+  FrameSize.BorderSizePixel = 0
+  FrameSize.Parent = Frame2
+  local corner2 = Instance.new("UICorner", FrameSize)
+  corner2.CornerRadius = Configs_HUB.Corner_Radius
 
-	TextButton.MouseButton1Click:Connect(function()
-		TweenService:Create(Frame2, TweenInfo.new(0.1), {Position = UDim2.new(0, -20, 0, 0)}):Play()
-		TweenService:Create(Frame2, TweenInfo.new(0.5), {Position = UDim2.new(0, 300, 0, 0)}):Play()
-		task.wait(0.5)
-		Frame1:Destroy()
-	end)
+  local spacer = Instance.new("Frame")
+  spacer.Size = UDim2.new(0, 0, 0, 5)
+  spacer.Position = UDim2.new(0, 0, 1, 5)
+  spacer.BackgroundTransparency = 1
+  spacer.Parent = Frame2
 
-	task.spawn(function()
-		TweenService:Create(Frame2, TweenInfo.new(0.5), {Position = UDim2.new(0, -20, 0, 0)}):Play()
-		TweenService:Create(Frame2, TweenInfo.new(0.1), {Position = UDim2.new() }):Play()
-		task.wait(timewait)
-		if Frame2 then
-			TweenService:Create(Frame2, TweenInfo.new(0.1), {Position = UDim2.new(0, -20, 0, 0)}):Play()
-			TweenService:Create(Frame2, TweenInfo.new(0.5), {Position = UDim2.new(0, 300, 0, 0)}):Play()
-			task.wait(0.5)
-			Frame1:Destroy()
-		end
-	end)
+  task.spawn(function()
+    game:GetService("TweenService"):Create(FrameSize, TweenInfo.new(timewait), {Size = UDim2.new(0, 0, 0, 2)}):Play()
+  end)
+
+  TextButton.MouseButton1Click:Connect(function()
+    game:GetService("TweenService"):Create(Frame2, TweenInfo.new(0.1), {Position = UDim2.new(0, -20, 0, 0)}):Play()
+    game:GetService("TweenService"):Create(Frame2, TweenInfo.new(0.5), {Position = UDim2.new(0, 300, 0, 0)}):Play()
+    Frame1:Destroy()
+  end)
+
+  task.spawn(function()
+    game:GetService("TweenService"):Create(Frame2, TweenInfo.new(0.5), {Position = UDim2.new(0, -20, 0, 0)}):Play()
+    game:GetService("TweenService"):Create(Frame2, TweenInfo.new(0.1), {Position = UDim2.new()}):Play()
+    task.wait(timewait)
+    if Frame2 then
+      game:GetService("TweenService"):Create(Frame2, TweenInfo.new(0.1), {Position = UDim2.new(0, -20, 0, 0)}):Play()
+      game:GetService("TweenService"):Create(Frame2, TweenInfo.new(0.5), {Position = UDim2.new(0, 300, 0, 0)}):Play()
+      Frame1:Destroy()
+    end
+  end)
 end
 
 		function Tab:AddDiscordInvite(Configs)
