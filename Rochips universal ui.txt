@@ -603,120 +603,128 @@ function redzlib:SetScale(NewScale)
 end
 
 
+local player = game.Players.LocalPlayer
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.Name = "Notifi"
+gui.ResetOnSpawn = false
+
 local Configs_HUB = {
-  Cor_Hub = Color3.fromRGB(15, 15, 15),
-  Cor_Options = Color3.fromRGB(15, 15, 15),
-  Cor_Stroke = Color3.fromRGB(0,0,255),
-  Cor_Text = Color3.fromRGB(240, 240, 240),
-  Cor_DarkText = Color3.fromRGB(240, 240, 240),
-  Corner_Radius = UDim.new(0,4),
-  Text_Font = Enum.Font.FredokaOne
+	Cor_Hub = Color3.fromRGB(15, 15, 15),
+	Cor_Options = Color3.fromRGB(15, 15, 15),
+	Cor_Stroke = Color3.fromRGB(0, 0, 255),
+	Cor_Text = Color3.fromRGB(240, 240, 240),
+	Cor_DarkText = Color3.fromRGB(240, 240, 240),
+	Corner_Radius = UDim.new(0, 4),
+	Text_Font = Enum.Font.FredokaOne
 }
 
-local Menu_Notifi = Create("Frame", ScreenGui, {
-  Size = UDim2.new(0, 300, 1, 0),
-  Position = UDim2.new(1, 0, 0, 0),
-  AnchorPoint = Vector2.new(1, 0),
-  BackgroundTransparency = 1
+local Notifi = Create("Frame", gui, {
+	Size = UDim2.new(0, 300, 1, 0),
+	Position = UDim2.new(1, 0, 0, 0),
+	AnchorPoint = Vector2.new(1, 0),
+	BackgroundTransparency = 1
 })
 
-local Padding = Create("UIPadding", Menu_Notifi, {
-  PaddingLeft = UDim.new(0, 25),
-  PaddingTop = UDim.new(0, 25),
-  PaddingBottom = UDim.new(0, 50)
+Create("UIPadding", Notifi, {
+	PaddingLeft = UDim.new(0, 25),
+	PaddingTop = UDim.new(0, 25),
+	PaddingBottom = UDim.new(0, 50)
 })
 
-local ListLayout = Create("UIListLayout", Menu_Notifi, {
-  Padding = UDim.new(0, 15),
-  VerticalAlignment = "Bottom"
+Create("UIListLayout", Notifi, {
+	Padding = UDim.new(0, 15),
+	VerticalAlignment = Enum.VerticalAlignment.Bottom
 })
 
 function MakeNotifi(Configs)
-  local Title = Configs.Title or "REDz HUB"
-  local text = Configs.Text or "Notificação"
-  local timewait = Configs.Time or 5
-  
-  local Frame1 = Create("Frame", Menu_Notifi, {
-    Size = UDim2.new(2, 0, 0, 0),
-    BackgroundTransparency = 1,
-    AutomaticSize = "Y",
-    Name = "Title"
-  })
-  
-  local Frame2 = Create("Frame", Frame1, {
-    Size = UDim2.new(0, Menu_Notifi.Size.X.Offset - 50, 0, 0),
-    BackgroundColor3 = Configs_HUB.Cor_Hub,
-    Position = UDim2.new(0, Menu_Notifi.Size.X.Offset, 0, 0),
-    AutomaticSize = "Y"
-  })Corner(Frame2)
-  
-  local TextLabel = Create("TextLabel", Frame2, {
-    Size = UDim2.new(1, 0, 0, 25),
-    Font = Configs_HUB.Text_Font,
-    BackgroundTransparency = 1,
-    Text = Title,
-    TextSize = 20,
-    Position = UDim2.new(0, 20, 0, 5),
-    TextXAlignment = "Left",
-    TextColor3 = Configs_HUB.Cor_Text
-  })
-  
-  local TextButton = Create("TextButton", Frame2, {
-    Text = "X",
-    Font = Configs_HUB.Text_Font,
-    TextSize = 20,
-    BackgroundTransparency = 1,
-    TextColor3 = Color3.fromRGB(200, 200, 200),
-    Position = UDim2.new(1, -5, 0, 5),
-    AnchorPoint = Vector2.new(1, 0),
-    Size = UDim2.new(0, 25, 0, 25)
-  })
-  
-  local TextLabel = Create("TextLabel", Frame2, {
-    Size = UDim2.new(1, -30, 0, 0),
-    Position = UDim2.new(0, 20, 0, TextButton.Size.Y.Offset + 10),
-    TextSize = 15,
-    TextColor3 = Configs_HUB.Cor_DarkText,
-    TextXAlignment = "Left",
-    TextYAlignment = "Top",
-    AutomaticSize = "Y",
-    Text = text,
-    Font = Configs_HUB.Text_Font,
-    BackgroundTransparency = 1,
-    AutomaticSize = Enum.AutomaticSize.Y,
-    TextWrapped = true
-  })
-  
-  local FrameSize = Create("Frame", Frame2, {
-    Size = UDim2.new(1, 0, 0, 2),
-    BackgroundColor3 = Configs_HUB.Cor_Stroke,
-    Position = UDim2.new(0, 2, 0, 30),
-    BorderSizePixel = 0
-  })Corner(FrameSize)Create("Frame", Frame2, {
-    Size = UDim2.new(0, 0, 0, 5),
-    Position = UDim2.new(0, 0, 1, 5),
-    BackgroundTransparency = 1
-  })
-  
-  task.spawn(function()
-    CreateTween(FrameSize, "Size", UDim2.new(0, 0, 0, 2), timewait, true)
-  end)
-  
-  TextButton.MouseButton1Click:Connect(function()
-    CreateTween(Frame2, "Position", UDim2.new(0, -20, 0, 0), 0.1, true)
-    CreateTween(Frame2, "Position", UDim2.new(0, Menu_Notifi.Size.X.Offset, 0, 0), 0.5, true)
-    Frame1:Destroy()
-  end)
-  
-  task.spawn(function()
-    CreateTween(Frame2, "Position", UDim2.new(0, -20, 0, 0), 0.5, true)
-    CreateTween(Frame2, "Position", UDim2.new(), 0.1, true)task.wait(timewait)
-    if Frame2 then
-      CreateTween(Frame2, "Position", UDim2.new(0, -20, 0, 0), 0.1, true)
-      CreateTween(Frame2, "Position", UDim2.new(0, Menu_Notifi.Size.X.Offset, 0, 0), 0.5, true)
-      Frame1:Destroy()
-    end
-  end)
+	local Title = Configs.Title or "تنبيه"
+	local Text = Configs.Text or "تم التنفيذ"
+	local Duration = Configs.Time or 5
+
+	local Holder = Create("Frame", Notifi, {
+		Size = UDim2.new(0, 300, 0, 0),
+		BackgroundTransparency = 1,
+		AutomaticSize = Enum.AutomaticSize.Y
+	})
+
+	local Main = Create("Frame", Holder, {
+		Size = UDim2.new(0, 250, 0, 0),
+		BackgroundColor3 = Configs_HUB.Cor_Hub,
+		Position = UDim2.new(0, 300, 0, 0),
+		AutomaticSize = Enum.AutomaticSize.Y
+	})
+	Corner(Main)
+
+	Create("TextLabel", Main, {
+		Size = UDim2.new(1, 0, 0, 25),
+		Font = Configs_HUB.Text_Font,
+		BackgroundTransparency = 1,
+		Text = Title,
+		TextSize = 20,
+		Position = UDim2.new(0, 20, 0, 5),
+		TextXAlignment = Enum.TextXAlignment.Left,
+		TextColor3 = Configs_HUB.Cor_Text
+	})
+
+	local Close = Create("TextButton", Main, {
+		Text = "X",
+		Font = Configs_HUB.Text_Font,
+		TextSize = 20,
+		BackgroundTransparency = 1,
+		TextColor3 = Color3.fromRGB(200, 200, 200),
+		Position = UDim2.new(1, -5, 0, 5),
+		AnchorPoint = Vector2.new(1, 0),
+		Size = UDim2.new(0, 25, 0, 25)
+	})
+
+	Create("TextLabel", Main, {
+		Size = UDim2.new(1, -30, 0, 0),
+		Position = UDim2.new(0, 20, 0, 35),
+		TextSize = 15,
+		TextColor3 = Configs_HUB.Cor_DarkText,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		TextYAlignment = Enum.TextYAlignment.Top,
+		AutomaticSize = Enum.AutomaticSize.Y,
+		Text = Text,
+		Font = Configs_HUB.Text_Font,
+		BackgroundTransparency = 1,
+		TextWrapped = true
+	})
+
+	local Line = Create("Frame", Main, {
+		Size = UDim2.new(1, 0, 0, 2),
+		BackgroundColor3 = Configs_HUB.Cor_Stroke,
+		Position = UDim2.new(0, 2, 0, 30),
+		BorderSizePixel = 0
+	})
+	Corner(Line)
+
+	Create("Frame", Main, {
+		Size = UDim2.new(0, 0, 0, 5),
+		Position = UDim2.new(0, 0, 1, 5),
+		BackgroundTransparency = 1
+	})
+
+	task.spawn(function()
+		CreateTween(Line, "Size", UDim2.new(0, 0, 0, 2), Duration, true)
+	end)
+
+	Close.MouseButton1Click:Connect(function()
+		CreateTween(Main, "Position", UDim2.new(0, -20, 0, 0), 0.1, true)
+		CreateTween(Main, "Position", UDim2.new(0, 300, 0, 0), 0.5, true)
+		Holder:Destroy()
+	end)
+
+	task.spawn(function()
+		CreateTween(Main, "Position", UDim2.new(0, -20, 0, 0), 0.5, true)
+		CreateTween(Main, "Position", UDim2.new(0, 0, 0, 0), 0.1, true)
+		task.wait(Duration)
+		if Main then
+			CreateTween(Main, "Position", UDim2.new(0, -20, 0, 0), 0.1, true)
+			CreateTween(Main, "Position", UDim2.new(0, 300, 0, 0), 0.5, true)
+			Holder:Destroy()
+		end
+	end)
 end
 
 function redzlib:MakeWindow(Configs)
