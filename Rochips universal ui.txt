@@ -1898,119 +1898,139 @@ function redzlib:MakeWindow(Configs)
 local Configs_HUB = {
 	Cor_Hub = Color3.fromRGB(15, 15, 15),
 	Cor_Stroke = Color3.fromRGB(0, 0, 255),
-	Cor_Text = Color3.fromRGB(255, 255, 255),
-	Corner_Radius = UDim.new(0, 6),
+	Cor_Text = Color3.fromRGB(240, 240, 240),
+	Cor_DarkText = Color3.fromRGB(240, 240, 240),
+	Corner_Radius = UDim.new(0,4),
 	Text_Font = Enum.Font.FredokaOne
 }
 
 local TweenService = game:GetService("TweenService")
 
-local function C(c, p, t)
-	local i = Instance.new(c)
-	for a, v in pairs(t or {}) do i[a] = v end
-	if p then i.Parent = p end
-	return i
+local function Create(class, parent, props)
+	local inst = Instance.new(class)
+	for i,v in pairs(props or {}) do inst[i] = v end
+	if parent then inst.Parent = parent end
+	return inst
 end
 
-local function Corner(i)
-	local u = Instance.new("UICorner")
-	u.CornerRadius = Configs_HUB.Corner_Radius
-	u.Parent = i
+local function Corner(inst)
+	local c = Instance.new("UICorner")
+	c.CornerRadius = Configs_HUB.Corner_Radius
+	c.Parent = inst
 end
 
-local g = Instance.new("ScreenGui", game.Players.LocalPlayer:WaitForChild("PlayerGui"))
-g.Name = "NotiGui"
-g.ResetOnSpawn = false
+local gui = Instance.new("ScreenGui", game.Players.LocalPlayer:WaitForChild("PlayerGui"))
+gui.Name = "REDZ_NOTIF"
+gui.ResetOnSpawn = false
 
-local p = C("Frame", g, {
-	Size = UDim2.new(0, 320, 1, 0),
-	Position = UDim2.new(1, -10, 0, 0),
+local Menu_Notifi = Create("Frame", gui, {
+	Size = UDim2.new(0, 300, 1, 0),
+	Position = UDim2.new(1, 0, 0, 0),
 	AnchorPoint = Vector2.new(1, 0),
-	BackgroundTransparency = 1,
-	Name = "NotifiPanel"
+	BackgroundTransparency = 1
 })
 
-C("UIPadding", p, {
-	PaddingLeft = UDim.new(0, 10),
-	PaddingTop = UDim.new(0, 10),
-	PaddingBottom = UDim.new(0, 20)
+Create("UIPadding", Menu_Notifi, {
+	PaddingLeft = UDim.new(0, 25),
+	PaddingTop = UDim.new(0, 25),
+	PaddingBottom = UDim.new(0, 50)
 })
 
-C("UIListLayout", p, {
-	Padding = UDim.new(0, 8),
+Create("UIListLayout", Menu_Notifi, {
+	Padding = UDim.new(0, 15),
 	VerticalAlignment = Enum.VerticalAlignment.Bottom
 })
 
-function MakeNotifi(cfg)
-	local t = cfg.Title or "تنبيه"
-	local m = cfg.Text or "تم بنجاح"
-	local d = cfg.Time or 4
-
-	local f = C("Frame", p, {
-		BackgroundColor3 = Configs_HUB.Cor_Hub,
-		Size = UDim2.new(1, 0, 0, 0),
-		AutomaticSize = Enum.AutomaticSize.Y,
-		ClipsDescendants = true
+function MakeNotifi(Configs)
+	local Title = Configs.Title or "REDz HUB"
+	local text = Configs.Text or "تم بنجاح"
+	local timewait = Configs.Time or 5
+	
+	local Frame1 = Create("Frame", Menu_Notifi, {
+		Size = UDim2.new(2, 0, 0, 0),
+		BackgroundTransparency = 1,
+		AutomaticSize = "Y",
+		Name = "Title"
 	})
-	Corner(f)
+	
+	local Frame2 = Create("Frame", Frame1, {
+		Size = UDim2.new(0, 250, 0, 0),
+		BackgroundColor3 = Configs_HUB.Cor_Hub,
+		Position = UDim2.new(0, 50, 0, 0),
+		AutomaticSize = "Y"
+	})
+	Corner(Frame2)
 
-	C("TextLabel", f, {
-		Text = t,
-		TextColor3 = Configs_HUB.Cor_Text,
-		TextSize = 18,
+	Create("TextLabel", Frame2, {
+		Size = UDim2.new(1, 0, 0, 25),
 		Font = Configs_HUB.Text_Font,
 		BackgroundTransparency = 1,
-		TextXAlignment = Enum.TextXAlignment.Left,
-		Size = UDim2.new(1, -30, 0, 25),
-		Position = UDim2.new(0, 10, 0, 5)
+		Text = Title,
+		TextSize = 20,
+		Position = UDim2.new(0, 20, 0, 5),
+		TextXAlignment = "Left",
+		TextColor3 = Configs_HUB.Cor_Text
 	})
 
-	local x = C("TextButton", f, {
+	local TextButton = Create("TextButton", Frame2, {
 		Text = "X",
 		Font = Configs_HUB.Text_Font,
-		TextSize = 18,
-		TextColor3 = Color3.fromRGB(255, 100, 100),
+		TextSize = 20,
 		BackgroundTransparency = 1,
-		Size = UDim2.new(0, 25, 0, 25),
-		Position = UDim2.new(1, -30, 0, 5),
-		AnchorPoint = Vector2.new(0, 0)
+		TextColor3 = Color3.fromRGB(200, 200, 200),
+		Position = UDim2.new(1, -5, 0, 5),
+		AnchorPoint = Vector2.new(1, 0),
+		Size = UDim2.new(0, 25, 0, 25)
 	})
 
-	C("TextLabel", f, {
-		Text = m,
-		TextColor3 = Configs_HUB.Cor_Text,
+	Create("TextLabel", Frame2, {
+		Size = UDim2.new(1, -30, 0, 0),
+		Position = UDim2.new(0, 20, 0, TextButton.Size.Y.Offset + 10),
 		TextSize = 15,
+		TextColor3 = Configs_HUB.Cor_DarkText,
+		TextXAlignment = "Left",
+		TextYAlignment = "Top",
+		AutomaticSize = Enum.AutomaticSize.Y,
+		Text = text,
 		Font = Configs_HUB.Text_Font,
 		BackgroundTransparency = 1,
-		TextWrapped = true,
-		TextXAlignment = Enum.TextXAlignment.Left,
-		TextYAlignment = Enum.TextYAlignment.Top,
-		AutomaticSize = Enum.AutomaticSize.Y,
-		Size = UDim2.new(1, -20, 0, 0),
-		Position = UDim2.new(0, 10, 0, 35)
+		TextWrapped = true
 	})
 
-	local l = C("Frame", f, {
+	local FrameSize = Create("Frame", Frame2, {
 		Size = UDim2.new(1, 0, 0, 2),
 		BackgroundColor3 = Configs_HUB.Cor_Stroke,
 		Position = UDim2.new(0, 2, 0, 30),
 		BorderSizePixel = 0
 	})
-	Corner(l)
+	Corner(FrameSize)
 
-	x.MouseButton1Click:Connect(function()
-		TweenService:Create(f, TweenInfo.new(0.3), {Position = UDim2.new(0, 320, 0, 0)}):Play()
-		task.wait(0.3)
-		f:Destroy()
+	Create("Frame", Frame2, {
+		Size = UDim2.new(0, 0, 0, 5),
+		Position = UDim2.new(0, 0, 1, 5),
+		BackgroundTransparency = 1
+	})
+
+	task.spawn(function()
+		TweenService:Create(FrameSize, TweenInfo.new(timewait), {Size = UDim2.new(0, 0, 0, 2)}):Play()
+	end)
+
+	TextButton.MouseButton1Click:Connect(function()
+		TweenService:Create(Frame2, TweenInfo.new(0.1), {Position = UDim2.new(0, -20, 0, 0)}):Play()
+		TweenService:Create(Frame2, TweenInfo.new(0.5), {Position = UDim2.new(0, 300, 0, 0)}):Play()
+		task.wait(0.5)
+		Frame1:Destroy()
 	end)
 
 	task.spawn(function()
-		TweenService:Create(f, TweenInfo.new(0.3), {Position = UDim2.new(0, 0, 0, 0)}):Play()
-		task.wait(d)
-		if f and f.Parent then
-			TweenService:Create(f, TweenInfo.new(0.3), {Position = UDim2.new(0, 320, 0, 0)}):Play()
-			task.wait(0.3)
-			f:Destroy()
+		TweenService:Create(Frame2, TweenInfo.new(0.5), {Position = UDim2.new(0, -20, 0, 0)}):Play()
+		TweenService:Create(Frame2, TweenInfo.new(0.1), {Position = UDim2.new() }):Play()
+		task.wait(timewait)
+		if Frame2 then
+			TweenService:Create(Frame2, TweenInfo.new(0.1), {Position = UDim2.new(0, -20, 0, 0)}):Play()
+			TweenService:Create(Frame2, TweenInfo.new(0.5), {Position = UDim2.new(0, 300, 0, 0)}):Play()
+			task.wait(0.5)
+			Frame1:Destroy()
 		end
 	end)
 end
