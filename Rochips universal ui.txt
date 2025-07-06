@@ -11,33 +11,20 @@ local PlayerMouse = Player:GetMouse()
 _G.Settings = {}
 
 function _G.RefreshTheme()
-	local UI = game:GetService("CoreGui"):FindFirstChild("redzlib")
+	local UI = game:GetService("CoreGui"):FindFirstChild("RedzLibV5")
 	if not UI then return end
-
 	for _, obj in pairs(UI:GetDescendants()) do
 		if obj:IsA("Frame") or obj:IsA("ScrollingFrame") then
-			pcall(function()
-				if _G.Settings["Color Hub 2"] then
-					obj.BackgroundColor3 = _G.Settings["Color Hub 2"]
-				end
-			end)
+			pcall(function() obj.BackgroundColor3 = _G.Settings["Color Hub 2"] end)
 		elseif obj:IsA("TextLabel") or obj:IsA("TextButton") then
-			pcall(function()
-				if _G.Settings["Color Text"] then
-					obj.TextColor3 = _G.Settings["Color Text"]
-				end
-			end)
+			pcall(function() obj.TextColor3 = _G.Settings["Color Text"] end)
 		elseif obj:IsA("UIStroke") then
-			pcall(function()
-				if _G.Settings["Color Stroke"] then
-					obj.Color = _G.Settings["Color Stroke"]
-				end
-			end)
+			pcall(function() obj.Color = _G.Settings["Color Stroke"] end)
 		end
 	end
 end
 
-local redzlib = {}
+local redzlib = redzlib or {}
 redzlib.Themes = {
 	Darker = {
 		["Color Hub 2"] = Color3.fromRGB(30, 30, 30),
@@ -107,13 +94,12 @@ redzlib.Themes = {
 	}
 }
 
-local SelectedTheme = "Astro"
-
-for k, v in pairs(redzlib.Themes[SelectedTheme]) do
-    _G.Settings[k] = v
+for k, v in pairs(redzlib.Themes["Astro"]) do
+	_G.Settings[k] = v
 end
 
 _G.RefreshTheme()
+
 	Info = {
 		Version = "1.1.0"
 	},
