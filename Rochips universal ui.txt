@@ -8,11 +8,9 @@ local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
 local PlayerMouse = Player:GetMouse()
 
-_G.Settings = {}
 
-function _G.RefreshTheme()
-	local UI = game:GetService("CoreGui"):FindFirstChild("redzlib")
-	if not UI then return end
+
+
 	for _, obj in pairs(UI:GetDescendants()) do
 		if obj:IsA("Frame") or obj:IsA("ScrollingFrame") then
 			pcall(function() obj.BackgroundColor3 = _G.Settings["Color Hub 2"] end)
@@ -25,13 +23,6 @@ function _G.RefreshTheme()
 end
 
 local redzlib = redzlib or {}
-redzlib.Themes = {
-	Darker = {
-		["Color Hub 2"] = Color3.fromRGB(30, 30, 30),
-		["Color Stroke"] = Color3.fromRGB(40, 40, 40),
-		["Color Theme"] = Color3.fromRGB(88, 101, 242),
-		["Color Text"] = Color3.fromRGB(243, 243, 243)
-	},
 	Dark = {
 		["Color Hub 2"] = Color3.fromRGB(45, 45, 45),
 		["Color Stroke"] = Color3.fromRGB(65, 65, 65),
@@ -2755,3 +2746,36 @@ function redzlib:MakeWindow(Configs)
 end
 
 return redzlib
+
+_G.Settings = {}
+
+function _G.RefreshTheme()
+    local ui = game:GetService("CoreGui"):FindFirstChild("RedzLibV5")
+    if not ui then return end
+    for _, o in ipairs(ui:GetDescendants()) do
+        if o:IsA("Frame") or o:IsA("ScrollingFrame") then
+            if _G.Settings["Color Hub 2"] then pcall(function() o.BackgroundColor3 = _G.Settings["Color Hub 2"] end) end
+        elseif o:IsA("TextLabel") or o:IsA("TextButton") then
+            if _G.Settings["Color Text"] then pcall(function() o.TextColor3 = _G.Settings["Color Text"] end) end
+        elseif o:IsA("UIStroke") then
+            if _G.Settings["Color Stroke"] then pcall(function() o.Color = _G.Settings["Color Stroke"] end) end
+        end
+    end
+end
+
+redzlib.Themes = {
+    Darker = {["Color Hub 2"]=Color3.fromRGB(30,30,30),["Color Stroke"]=Color3.fromRGB(40,40,40),["Color Theme"]=Color3.fromRGB(88,101,242),["Color Text"]=Color3.fromRGB(243,243,243)},
+    Dark   = {["Color Hub 2"]=Color3.fromRGB(45,45,45),["Color Stroke"]=Color3.fromRGB(65,65,65),["Color Theme"]=Color3.fromRGB(65,150,255),["Color Text"]=Color3.fromRGB(245,245,245)},
+    Purple = {["Color Hub 2"]=Color3.fromRGB(30,30,30),["Color Stroke"]=Color3.fromRGB(40,40,40),["Color Theme"]=Color3.fromRGB(150,0,255),["Color Text"]=Color3.fromRGB(240,240,240)},
+    Astro  = {["Color Hub 2"]=Color3.fromRGB(15,15,25),["Color Stroke"]=Color3.fromRGB(30,30,50),["Color Theme"]=Color3.fromRGB(0,255,255),["Color Text"]=Color3.fromRGB(230,230,255)},
+    Red    = {["Color Hub 2"]=Color3.fromRGB(60,15,15),["Color Stroke"]=Color3.fromRGB(80,20,20),["Color Theme"]=Color3.fromRGB(255,0,0),["Color Text"]=Color3.fromRGB(255,200,200)},
+    Blue   = {["Color Hub 2"]=Color3.fromRGB(20,20,50),["Color Stroke"]=Color3.fromRGB(35,35,70),["Color Theme"]=Color3.fromRGB(0,120,255),["Color Text"]=Color3.fromRGB(200,220,255)},
+    Green  = {["Color Hub 2"]=Color3.fromRGB(15,35,15),["Color Stroke"]=Color3.fromRGB(30,50,30),["Color Theme"]=Color3.fromRGB(0,255,150),["Color Text"]=Color3.fromRGB(220,255,220)},
+    Pink   = {["Color Hub 2"]=Color3.fromRGB(50,15,30),["Color Stroke"]=Color3.fromRGB(70,25,50),["Color Theme"]=Color3.fromRGB(255,105,180),["Color Text"]=Color3.fromRGB(255,220,240)},
+    Neon   = {["Color Hub 2"]=Color3.fromRGB(10,10,25),["Color Stroke"]=Color3.fromRGB(15,15,30),["Color Theme"]=Color3.fromRGB(0,255,100),["Color Text"]=Color3.fromRGB(200,255,220)},
+    Gold   = {["Color Hub 2"]=Color3.fromRGB(60,40,5),["Color Stroke"]=Color3.fromRGB(80,60,10),["Color Theme"]=Color3.fromRGB(255,215,0),["Color Text"]=Color3.fromRGB(255,240,180)},
+    Sky    = {["Color Hub 2"]=Color3.fromRGB(130,180,255),["Color Stroke"]=Color3.fromRGB(160,200,255),["Color Theme"]=Color3.fromRGB(0,150,255),["Color Text"]=Color3.fromRGB(255,255,255)}
+}
+
+for k,v in pairs(redzlib.Themes["Astro"]) do _G.Settings[k]=v end
+_G.RefreshTheme()
