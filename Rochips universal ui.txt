@@ -8,6 +8,29 @@ local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
 local PlayerMouse = Player:GetMouse()
 
+_G.Settings = {}
+
+function _G.RefreshTheme()
+	local UI = game:GetService("CoreGui"):FindFirstChild("redzlib")
+	if not UI then return end
+
+	for _, obj in pairs(UI:GetDescendants()) do
+		if obj:IsA("Frame") or obj:IsA("ScrollingFrame") then
+			if _G.Settings["Color Hub 2"] then
+				obj.BackgroundColor3 = _G.Settings["Color Hub 2"]
+			end
+		elseif obj:IsA("TextLabel") or obj:IsA("TextButton") then
+			if _G.Settings["Color Text"] then
+				obj.TextColor3 = _G.Settings["Color Text"]
+			end
+		elseif obj:IsA("UIStroke") then
+			if _G.Settings["Color Stroke"] then
+				obj.Color = _G.Settings["Color Stroke"]
+			end
+		end
+	end
+end
+
 local redzlib = {
 	Themes = {
 		Darker = {
@@ -145,30 +168,6 @@ local redzlib = {
 	}
 }
 	},
-
-_G.Settings = {}
-
-function _G.RefreshTheme()
-	local UI = game:GetService("CoreGui"):FindFirstChild("redzlib")
-	if not UI then return end
-
-	for _, obj in pairs(UI:GetDescendants()) do
-		if obj:IsA("Frame") or obj:IsA("ScrollingFrame") then
-			if _G.Settings["Color Hub 2"] then
-				obj.BackgroundColor3 = _G.Settings["Color Hub 2"]
-			end
-		elseif obj:IsA("TextLabel") or obj:IsA("TextButton") then
-			if _G.Settings["Color Text"] then
-				obj.TextColor3 = _G.Settings["Color Text"]
-			end
-		elseif obj:IsA("UIStroke") then
-			if _G.Settings["Color Stroke"] then
-				obj.Color = _G.Settings["Color Stroke"]
-			end
-		end
-	end
-end
-
 	Info = {
 		Version = "1.1.0"
 	},
