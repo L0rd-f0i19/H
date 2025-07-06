@@ -106,7 +106,6 @@ redzlib.Themes = {
 		["Color Text"] = Color3.fromRGB(255, 255, 255)
 	}
 }
-	},
 
 local SelectedTheme = "Astro"
 
