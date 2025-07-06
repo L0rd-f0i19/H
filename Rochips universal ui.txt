@@ -110,11 +110,10 @@ redzlib.Themes = {
 local SelectedTheme = "Astro"
 
 for k, v in pairs(redzlib.Themes[SelectedTheme]) do
-	_G.Settings[k] = v
+    _G.Settings[k] = v
 end
 
 _G.RefreshTheme()
-
 	Info = {
 		Version = "1.1.0"
 	},
