@@ -11,7 +11,7 @@ local PlayerMouse = Player:GetMouse()
 _G.Settings = {}
 
 function _G.RefreshTheme()
-	local UI = game:GetService("CoreGui"):FindFirstChild("RedzLibV5")
+	local UI = game:GetService("CoreGui"):FindFirstChild("redzlib")
 	if not UI then return end
 	for _, obj in pairs(UI:GetDescendants()) do
 		if obj:IsA("Frame") or obj:IsA("ScrollingFrame") then
