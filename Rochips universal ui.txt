@@ -94,25 +94,20 @@ local SetProps, SetChildren, InsertTheme, Create do
 			Type = Type
 		})
 		return Instance
-	end
 	
 	SetChildren = function(Instance, Children)
 		if Children then
 			table.foreach(Children, function(_,Child)
 				Child.Parent = Instance
 			end)
-		end
 		return Instance
-	end
 	
 	SetProps = function(Instance, Props)
 		if Props then
 			table.foreach(Props, function(prop, value)
 				Instance[prop] = value
 			end)
-		end
 		return Instance
-	end
 	
 	Create = function(...)
 		local args = {...}
@@ -236,7 +231,6 @@ local Connections, Connection = {}, redzlib.Connection do
 				end
 			end
 		end
-	end
 	
 	function Connection:FireConnection(CoName, ...)
 		local Connection = type(CoName) == "string" and Connections[CoName] or Connections[CoName.Name]
@@ -246,23 +240,19 @@ local Connections, Connection = {}, redzlib.Connection do
 	end
 	
 	NewConnectionList({"FlagsChanged", "ThemeChanged", "FileSaved", "ThemeChanging", "OptionAdded"})
-end
 
 local GetFlag, SetFlag, CheckFlag do
 	CheckFlag = function(Name)
 		return type(Name) == "string" and Flags[Name] ~= nil
-	end
 	
 	GetFlag = function(Name)
 		return type(Name) == "string" and Flags[Name]
-	end
 	
 	SetFlag = function(Flag, Value)
 		if Flag and (Value ~= Flags[Flag] or type(Value) == "table") then
 			Flags[Flag] = Value
 			Connection:FireConnection("FlagsChanged", Flag, Value)
 		end
-	end
 	
 	local db
 	Connection.FlagsChanged:Connect(function(Flag, Value)
@@ -282,9 +272,6 @@ local GetFlag, SetFlag, CheckFlag do
 					Connection:FireConnection("FileSaved", "Script-Flags", ScriptFile, Encoded)
 				end
 			end
-		end
-	end)
-end
 
 local ScreenGui = Create("ScreenGui", CoreGui, {
 	Name = "Next Gen Lib By Redz9999",
@@ -305,7 +292,6 @@ local function GetStr(val)
 		return val()
 	end
 	return val
-end
 
 local function ConnectSave(Instance, func)
 	Instance.InputBegan:Connect(function(Input)
@@ -314,7 +300,6 @@ local function ConnectSave(Instance, func)
 			end
 		end
 		func()
-	end)
 end
 
 local function CreateTween(Configs)
