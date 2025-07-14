@@ -1216,7 +1216,7 @@ function redzlib:MakeWindow(Configs)
         sound.SoundId = "rbxassetid://9118823109"
         sound.Volume = 0.35
         sound.PlayOnRemove = true
-        sound.Parent = game:GetService("SoundService")
+        sound.Parent = SoundService
         sound:Destroy()
 
         table.foreach(MultCallback, function(_,Callback)
@@ -1321,7 +1321,7 @@ function redzlib:MakeWindow(Configs)
         sound.SoundId = "rbxassetid://9118823109"
         sound.Volume = 0.35
         sound.PlayOnRemove = true
-        sound.Parent = game:GetService("SoundService")
+        sound.Parent = SoundService
         sound:Destroy()
 
         SetToggle(not Default)
@@ -2004,7 +2004,7 @@ function redzlib:MakeWindow(Configs)
         sound.SoundId = "rbxassetid://9118823109"
         sound.Volume = 0.35
         sound.PlayOnRemove = true
-        sound.Parent = game:GetService("SoundService")
+        sound.Parent = SoundService
         sound:Destroy()
 
 				setclipboard(Invite)
