@@ -644,6 +644,7 @@ function redzlib:MakeWindow(Configs)
   local MainFrame = InsertTheme(Create("ImageButton", ScreenGui, {
 
     local bgImage = Instance.new("ImageLabel")
+    bgImage.Name = "CustomBackground"
     bgImage.Image = "rbxassetid://91946944195755"
     bgImage.BackgroundTransparency = 1
     bgImage.Size = UDim2.new(1, 0, 1, 0)
@@ -1213,7 +1214,7 @@ function redzlib:MakeWindow(Configs)
 
         local sound = Instance.new("Sound")
         sound.SoundId = "rbxassetid://9118823109"
-        sound.Volume = 0.3
+        sound.Volume = 0.35
         sound.PlayOnRemove = true
         sound.Parent = game:GetService("SoundService")
         sound:Destroy()
@@ -1318,7 +1319,7 @@ function redzlib:MakeWindow(Configs)
 
         local sound = Instance.new("Sound")
         sound.SoundId = "rbxassetid://9118823109"
-        sound.Volume = 0.3
+        sound.Volume = 0.35
         sound.PlayOnRemove = true
         sound.Parent = game:GetService("SoundService")
         sound:Destroy()
@@ -2001,7 +2002,7 @@ function redzlib:MakeWindow(Configs)
 
         local sound = Instance.new("Sound")
         sound.SoundId = "rbxassetid://9118823109"
-        sound.Volume = 0.3
+        sound.Volume = 0.35
         sound.PlayOnRemove = true
         sound.Parent = game:GetService("SoundService")
         sound:Destroy()
