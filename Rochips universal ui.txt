@@ -403,7 +403,7 @@ BorderColor = Color3.fromRGB(139, 0, 0)
 	}), props)
 	
 	local border = Instance.new("UIStroke")
-  border.Thickness = BorderColor -- Ajuste a espessura da borda conforme necessário
+  border.Thickness = 1 -- Ajuste a espessura da borda conforme necessário
   border.Parent = parent
   
   spawn(function()
@@ -1212,12 +1212,12 @@ function redzlib:MakeWindow(Configs)
 
       Button.Activated:Connect(function()task.spawn(Callback, "Click")
 
-        local sound = Instance.new("Sound")
-        sound.SoundId = "rbxassetid://9118823109"
-        sound.Volume = 0.35
-        sound.PlayOnRemove = true
-        sound.Parent = SoundService
-        sound:Destroy()
+        local clickSound = Instance.new("Sound")
+        clickSound.SoundId = "rbxassetid://9118823109"
+        clickSound.Volume = 0.35
+        clickSound.PlayOnRemove = true
+        clickSound.Parent = SoundService
+        clickSound:Destroy()
 
         table.foreach(MultCallback, function(_,Callback)
           if type(Callback) == "function" then
@@ -1317,12 +1317,12 @@ function redzlib:MakeWindow(Configs)
 
       Button.Activated:Connect(function()
 
-        local sound = Instance.new("Sound")
-        sound.SoundId = "rbxassetid://9118823109"
-        sound.Volume = 0.35
-        sound.PlayOnRemove = true
-        sound.Parent = SoundService
-        sound:Destroy()
+        local clickSound = Instance.new("Sound")
+        clickSound.SoundId = "rbxassetid://9118823109"
+        clickSound.Volume = 0.35
+        clickSound.PlayOnRemove = true
+        clickSound.Parent = SoundService
+        clickSound:Destroy()
 
         SetToggle(not Default)
       end)
@@ -2000,12 +2000,12 @@ function redzlib:MakeWindow(Configs)
 			local ClickDelay
 			JoinButton.Activated:Connect(function()
 
-        local sound = Instance.new("Sound")
-        sound.SoundId = "rbxassetid://9118823109"
-        sound.Volume = 0.35
-        sound.PlayOnRemove = true
-        sound.Parent = SoundService
-        sound:Destroy()
+        local clickSound = Instance.new("Sound")
+        clickSound.SoundId = "rbxassetid://9118823109"
+        clickSound.Volume = 0.35
+        clickSound.PlayOnRemove = true
+        clickSound.Parent = SoundService
+        clickSound:Destroy()
 
 				setclipboard(Invite)
 				if ClickDelay then return end
