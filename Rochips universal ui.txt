@@ -50,7 +50,20 @@ _G.WindowFontSizeButtonSet =  _G.WindowFontSizeButtonSet or 10
 			["Color Text"] = Color3.fromRGB(240, 240, 240),
 			["Color Dark Text"] = Color3.fromRGB(180, 180, 180)
 		}, 
-		DarkRed = {
+RealzXHub = {
+    ["Color Hub 1"] = ColorSequence.new({
+        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(18, 18, 18)),
+        ColorSequenceKeypoint.new(0.50, Color3.fromRGB(22, 22, 22)),
+        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(18, 18, 18))
+    }),
+    ["Color Hub 2"] = Color3.fromRGB(25, 25, 25),
+    ["Color Stroke"] = Color3.fromRGB(40, 40, 40),
+    ["Color Theme"] = Color3.fromRGB(255, 210, 80),
+    ["Color Text"] = Color3.fromRGB(240, 240, 240),
+    ["Color Dark Text"] = Color3.fromRGB(160, 160, 160)
+},
+
+DarkRed = {
 		["Color Hub 1"] = ColorSequence.new({
         ColorSequenceKeypoint.new(0.00, Color3.fromRGB(28, 23, 25.5)),
         ColorSequenceKeypoint.new(0.50, Color3.fromRGB(30.5, 30.5, 30.5)),
@@ -94,20 +107,25 @@ local SetProps, SetChildren, InsertTheme, Create do
 			Type = Type
 		})
 		return Instance
+	end
 	
 	SetChildren = function(Instance, Children)
 		if Children then
 			table.foreach(Children, function(_,Child)
 				Child.Parent = Instance
 			end)
+		end
 		return Instance
+	end
 	
 	SetProps = function(Instance, Props)
 		if Props then
 			table.foreach(Props, function(prop, value)
 				Instance[prop] = value
 			end)
+		end
 		return Instance
+	end
 	
 	Create = function(...)
 		local args = {...}
@@ -231,6 +249,7 @@ local Connections, Connection = {}, redzlib.Connection do
 				end
 			end
 		end
+	end
 	
 	function Connection:FireConnection(CoName, ...)
 		local Connection = type(CoName) == "string" and Connections[CoName] or Connections[CoName.Name]
@@ -240,19 +259,23 @@ local Connections, Connection = {}, redzlib.Connection do
 	end
 	
 	NewConnectionList({"FlagsChanged", "ThemeChanged", "FileSaved", "ThemeChanging", "OptionAdded"})
+end
 
 local GetFlag, SetFlag, CheckFlag do
 	CheckFlag = function(Name)
 		return type(Name) == "string" and Flags[Name] ~= nil
+	end
 	
 	GetFlag = function(Name)
 		return type(Name) == "string" and Flags[Name]
+	end
 	
 	SetFlag = function(Flag, Value)
 		if Flag and (Value ~= Flags[Flag] or type(Value) == "table") then
 			Flags[Flag] = Value
 			Connection:FireConnection("FlagsChanged", Flag, Value)
 		end
+	end
 	
 	local db
 	Connection.FlagsChanged:Connect(function(Flag, Value)
@@ -272,6 +295,9 @@ local GetFlag, SetFlag, CheckFlag do
 					Connection:FireConnection("FileSaved", "Script-Flags", ScriptFile, Encoded)
 				end
 			end
+		end
+	end)
+end
 
 local ScreenGui = Create("ScreenGui", CoreGui, {
 	Name = "Next Gen Lib By Redz9999",
@@ -292,6 +318,7 @@ local function GetStr(val)
 		return val()
 	end
 	return val
+end
 
 local function ConnectSave(Instance, func)
 	Instance.InputBegan:Connect(function(Input)
@@ -300,6 +327,7 @@ local function ConnectSave(Instance, func)
 			end
 		end
 		func()
+	end)
 end
 
 local function CreateTween(Configs)
@@ -308,9 +336,9 @@ local function CreateTween(Configs)
   local NewVal = Configs[3] or Configs.NewVal
   local Time = Configs[4] or Configs.Time or 0.5
   local TweenWait = Configs[5] or Configs.wait or false
-  local TInfo = TweenInfo.new(Time, Enum.EasingStyle.Quint)
+  local TweenInfo = TweenInfo.new(Time, Enum.EasingStyle.Quint)
 
-  local Tween = TweenService:Create(Instance, TInfo, {[Prop] = NewVal})
+  local Tween = TweenService:Create(Instance, TweenInfo, {[Prop] = NewVal})
   Tween:Play()
   if TweenWait then
     Tween.Completed:Wait()
@@ -388,7 +416,7 @@ BorderColor = Color3.fromRGB(139, 0, 0)
 	}), props)
 	
 	local border = Instance.new("UIStroke")
-  border.Thickness = 1 -- Ajuste a espessura da borda conforme necessário
+  border.Thickness = BorderColor -- Ajuste a espessura da borda conforme necessário
   border.Parent = parent
   
   spawn(function()
@@ -627,21 +655,6 @@ function redzlib:MakeWindow(Configs)
 
   local UISizeX, UISizeY = unpack(redzlib.Save.UISize)
   local MainFrame = InsertTheme(Create("ImageButton", ScreenGui, {
-
-    local bgImage = Instance.new("ImageLabel")
-    bgImage.Name = "CustomBackground"
-    bgImage.Image = "rbxassetid://91946944195755"
-    bgImage.BackgroundTransparency = 1
-    bgImage.Size = UDim2.new(1, 0, 1, 0)
-    bgImage.Position = UDim2.new(0, 0, 0, 0)
-    bgImage.ZIndex = 0
-    bgImage.Parent = MainFrame
-
-    bgImage.ImageTransparency = 1
-    TweenService:Create(bgImage, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-        ImageTransparency = 0
-    }):Play()
-
     Size = UDim2.fromOffset(UISizeX, UISizeY),
     Position = UDim2.new(0.5, -UISizeX/2, 0.5, -UISizeY/2),
     BackgroundTransparency = 0.03,
@@ -1196,14 +1209,6 @@ function redzlib:MakeWindow(Configs)
       })
 
       Button.Activated:Connect(function()task.spawn(Callback, "Click")
-
-        local clickSound = Instance.new("Sound")
-        clickSound.SoundId = "rbxassetid://9118823109"
-        clickSound.Volume = 0.35
-        clickSound.PlayOnRemove = true
-        clickSound.Parent = SoundService
-        clickSound:Destroy()
-
         table.foreach(MultCallback, function(_,Callback)
           if type(Callback) == "function" then
             task.spawn(Callback, "Click")
@@ -1301,14 +1306,6 @@ function redzlib:MakeWindow(Configs)
       end;task.spawn(SetToggle, Default)
 
       Button.Activated:Connect(function()
-
-        local clickSound = Instance.new("Sound")
-        clickSound.SoundId = "rbxassetid://9118823109"
-        clickSound.Volume = 0.35
-        clickSound.PlayOnRemove = true
-        clickSound.Parent = SoundService
-        clickSound:Destroy()
-
         SetToggle(not Default)
       end)
 
@@ -1984,14 +1981,6 @@ function redzlib:MakeWindow(Configs)
 			
 			local ClickDelay
 			JoinButton.Activated:Connect(function()
-
-        local clickSound = Instance.new("Sound")
-        clickSound.SoundId = "rbxassetid://9118823109"
-        clickSound.Volume = 0.35
-        clickSound.PlayOnRemove = true
-        clickSound.Parent = SoundService
-        clickSound:Destroy()
-
 				setclipboard(Invite)
 				if ClickDelay then return end
 				
@@ -2022,3 +2011,23 @@ function redzlib:MakeWindow(Configs)
 end
 
 return redzlib
+
+
+
+function Tab:AddImageLabel(Configs)
+    local userId = game.Players.LocalPlayer.UserId
+    local thumbType = Enum.ThumbnailType.HeadShot
+    local thumbSize = Enum.ThumbnailSize.Size100x100
+    local content = game.Players:GetUserThumbnailAsync(userId, thumbType, thumbSize)
+
+    local Frame = Create("ImageLabel", Container, {
+        Size = UDim2.new(0, 100, 0, 100),
+        Image = content,
+        BackgroundTransparency = 1,
+        ScaleType = Enum.ScaleType.Crop,
+        Name = "PlayerImage"
+    })
+    Make("Corner", Frame, UDim.new(1, 0))
+
+    return Frame
+end
